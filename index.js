@@ -1,33 +1,8 @@
 const express = require('express');
 const path = require('path');
-const app = express();
 
-const members = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    status: 'active',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    email: 'janesmith@example.com',
-    status: 'inactive',
-  },
-  {
-    id: 3,
-    name: 'Bob Johnson',
-    email: 'bobjohnson@example.com',
-    status: 'active',
-  },
-  {
-    id: 4,
-    name: 'Alice Brown',
-    email: 'alicebrown@example.com',
-    status: 'inactive',
-  },
-];
+const logger = require('./middleware/logger');
+const app = express();
 
 /* app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
@@ -37,11 +12,14 @@ app.get('/about', (req, res) =>
   res.sendFile(path.join(__dirname, 'public', 'about.html'))
 ); */
 
-// Get all members
-app.get('/api/members', (req, res) => res.json(members));
+// Init middleware
+// app.use(logger);
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Members API Routes
+app.use('/api/members', require('./routes/api/members'));
 
 const PORT = process.env.PORT || 3000;
 
